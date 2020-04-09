@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<string.h>
+
+//define maximum up to 100
+#define MAX 100
+
+int top = -1;
+char stack[MAX];
+
+/*start of push*/
+char push(char word)
+{
+	if(top == (MAX-1))
+		printf("Stack Overflow\n");
+	else
+		stack[++top]=word;
+}
+/*End of push*/
+
+/*start of pop*/
+char pop()
+{
+	if(top == -1)
+		printf("Stack Underflow\n");
+	else
+		return stack[top--];
+}
+/*End of pop*/
+
+/*start of main*/
+main()
+{
+	char wrd[100];
+	int v;
+	printf("Enter the string : " );
+	gets(wrd);
+	for(v=0;v<strlen(wrd);v++)
+		push(wrd[v]);
+	for(v=0;v<strlen(wrd);v++)
+		wrd[v]=pop();
+	printf("Reversed string is : ");
+	puts(wrd);
+}
+/*End of main*/
