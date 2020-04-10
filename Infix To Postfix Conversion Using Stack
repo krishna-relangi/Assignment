@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100            
+
+char stack[SIZE];
+int top=-1;       
+ 
+push(char element)
+{                       /* Function for PUSH operation */
+    stack[++top]=element;
+}
+ 
+char pop()
+{                      /* Function for POP operation */
+    return(stack[top--]);
+}
+ 
+int vk(char notation)
+{                 /* Function for precedence */
+    
+	if(notation == '^')/* exponent operator, highest precedence*/
+	{
+		return(3);
+	}
+	else if(notation == '*' || notation == '/')
+	{
+		return(2);
+	}
+	else if(notation == '+' || notation == '-')          /* lowest precedence */
+	{
+		return(1);
+	}
+	else
+	{
+		return(0);
+	}
+}
+  /* Main Program */
+void main()
+{                        
+    char infix[50],postfix[50],kr,element;
+    int i=0,v=0;
+    printf("Enter Infix Expression : ");
+    scanf("%s",infix);
+    push('#');
+    while( (kr=infix[i++]) != '\0')
+    {
+        if( kr == '(') push(kr);
+        else
+            if(isalnum(kr)) postfix[v++]=kr;
+            else
+                if( kr == ')')
+                {
+                    while( stack[top] != '(')
+                        postfix[v++]=pop();
+                    element=pop(); /* Remove ( */
+                }
+                else
+                {       /* Operator */
+                    while( vk(stack[top]) >= vk(kr) )
+                        postfix[v++]=pop();
+                    push(kr);
+                }
+    }
+    while( stack[top] != '#')     /* Pop from stack till empty */
+        postfix[v++]=pop();
+    postfix[v]='\0';          /* Make postfix as valid string */
+    printf("\nPostfix Expression =  %s\n",postfix);
+}
